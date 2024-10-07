@@ -25,6 +25,8 @@ module.exports = {
 			avatarURL: 'https://flush.eqilia.gay/shame.png'
 		}
 
+		console.log(message.author.id);
+
 		if (typeof message.author.username === 'string') {
 			data.displayName = message.author.username;
 		}
@@ -53,6 +55,22 @@ module.exports = {
 		}
 
 		globalThis.snipeStore.set(message.channel.id, data);
+
+		if (false) {
+			await message.channel.send({
+				embeds: [
+					{
+						color: 0x32a852,
+						author: {
+							icon_url: `${data.avatarURL}`,
+							name: `${data.displayName} (${message.author.username})`
+						},
+						description: `${data.content}`,
+						timestamp: new Date().toISOString()
+					}
+				]
+			});
+		}
 
 		return;
 	}

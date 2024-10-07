@@ -18,9 +18,11 @@
 const path = require('node:path');
 const fs = require('node:fs');
 
+const bdb = require('burgerdatabase');
 const dotenv = require('dotenv');
 const { Client, GatewayIntentBits } = require('discord.js');
 
+globalThis.db = new bdb({ path: './data.json' });
 globalThis.config = require('./config.json');
 dotenv.config();
 
@@ -57,7 +59,3 @@ globalThis.reloadEvents = () => {
 globalThis.reloadEvents();
 
 client.login(process.env.DISCORD_BOT_TOKEN);
-
-process.on('SIGINT', async () => {
-	client.destroy();
-});
