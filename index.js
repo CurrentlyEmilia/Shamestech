@@ -18,11 +18,9 @@
 const path = require('node:path');
 const fs = require('node:fs');
 
-const bdb = require('burgerdatabase');
 const dotenv = require('dotenv');
 const { Client, GatewayIntentBits } = require('discord.js');
 
-globalThis.db = new bdb({ path: './data.json' });
 globalThis.config = require('./config.json');
 dotenv.config();
 
@@ -32,7 +30,8 @@ const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.MessageContent
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.DirectMessages
 	]
 });
 globalThis.client = client;
@@ -55,6 +54,10 @@ globalThis.reloadEvents = () => {
 		client.on(eventModule.name, eventModule.execute);
 	}
 }
+
+process.on('unhandledRejection', async (a) => {
+	console.error(a);
+});
 
 globalThis.reloadEvents();
 
