@@ -33,7 +33,7 @@ module.exports = {
 		if (typeof message.author.displayName === 'string') {
 			data.displayName = message.author.displayName;
 		}
-		if (typeof message.member.nickname === 'string') {
+		if (typeof message.member?.nickname === 'string') {
 			data.displayName = message.member.nickname;
 		}
 
