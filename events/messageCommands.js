@@ -20,7 +20,6 @@ const util = require('node:util');
 const fs = require('node:fs');
 
 const { Collection } = require('discord.js');
-const blake3 = require('blake3');
 
 globalThis.commands = new Collection();
 
@@ -69,6 +68,10 @@ module.exports = {
 			return;
 		}
 
+		if (message.author.id === '1248993299646124162') {
+			return await message.reply('As explained on the server "Gay sxe place with no sxe", you have been banned from this bot. Please do not try to use the bot again.\nFor a quick reminder, here is the letter:\n\nHello Twissted,\n\nI am contacting you to inform that your abuse of the bot has been detected.\nYour access to the bot has been therefore revoked. Please do not try further to access the bot.\n\nThe attachment below contains the content for the reason which you were blocked.\n\nKind regards,\nEmilia.\n\nhttps://flush.eqilia.gay/image2.png');
+		}
+
 		const args = message.content.slice(prefix.length).trim().split(/ +/gmi);
 		const command = globalThis.commands.get(args[0]);
 
@@ -81,8 +84,9 @@ module.exports = {
 		} catch (e) {
 			console.error(e);
 			return await message.reply({
-				content: `an error occurred\nerror code: 0x${blake3.hash(util.inspect(e), { length: 64 }).toString('hex')}\nplease contact the bot developer`
+				content: `an error occurred\n${e}\nplease contact the bot developer`
 			});
 		}
 	}
 }
+
