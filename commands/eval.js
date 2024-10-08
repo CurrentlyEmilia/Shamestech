@@ -16,7 +16,6 @@
 */
 
 const util = require('node:util');
-const ivm = require('isolated-vm');
 
 module.exports = {
 	name: 'eval',
@@ -24,22 +23,16 @@ module.exports = {
 		const prompt = args.join(' ');
 		let out = '';
 
-		if (message.author.id === '1257636259258568777') {
-			try {
-				out = util.inspect(eval(prompt));
-			} catch (e) {
-				out = `${e}`
-			}
-		} else {
-			const isolate = new ivm.Isolate({ memoryLimit: 8 });
-			const script = isolate.compileScriptSync(prompt);
-			const context = isolate.createContextSync();
+		if (message.author.id !== '1257636259258568777') {
+			return await message.reply({
+				content: 'Sorry, permission denied.'
+			});
+		}
 
-			try {
-				out = util.format(script.runSync(context, { timeout: 5 }));
-			} catch (e) {
-				out = `${e}`
-			}
+		try {
+			out = util.inspect(eval(prompt));
+		} catch (e) {
+			out = `${e}`
 		}
 
 		return await message.reply({
