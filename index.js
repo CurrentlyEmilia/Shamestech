@@ -1,20 +1,3 @@
-/*
- * Copyright (C) 2024 Emilia Luminé <eqilia@national.shitposting.agency>
- * This file is a part of the Shamestech bot.
- * 
- * The Shamestech bot is free software: you can redistribute it and/or modify it
- * under the terms of the European Union Public License as published by
- * by the European Union, only the version 1.2 of the License.
- * 
- * The Shamestech bot is distributed in the hope that it will be useful
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * European Union Public License for more details.
- * 
- * You should have received a copy of the European Union Public License, If not
- * see <https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12>
-*/
-
 const path = require('node:path');
 const fs = require('node:fs');
 
@@ -24,14 +7,18 @@ const { Client, GatewayIntentBits } = require('discord.js');
 globalThis.config = require('./config.json');
 dotenv.config();
 
-globalThis.snipeStore = new Map();
+const a = require('./dbModule.js');
+
+globalThis.db = a.db
+globalThis.moderative = a.moderative
+globalThis.profile = a.profile
 
 const client = new Client({
 	intents: [
 		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMembers,
 		GatewayIntentBits.GuildMessages,
-		GatewayIntentBits.MessageContent,
-		GatewayIntentBits.DirectMessages
+		GatewayIntentBits.MessageContent
 	]
 });
 globalThis.client = client;
@@ -40,6 +27,8 @@ globalThis.reloadEvents = () => {
 	client.removeAllListeners();
 
 	const eventsDir = fs.readdirSync(config.directories.eventsDir).filter((fileName) => fileName.endsWith('.js'));
+
+	console.log('Eventy:');
 
 	for (let i = 0; i < eventsDir.length; i += 1) {
 		const eventModulePath = path.join(process.cwd(), config.directories.eventsDir, eventsDir[i]);
@@ -52,12 +41,10 @@ globalThis.reloadEvents = () => {
 		}
 
 		client.on(eventModule.name, eventModule.execute);
+
+		console.log(`\t${eventModulePath} -> ${eventModule.name}`);
 	}
 }
-
-process.on('unhandledRejection', async (a) => {
-	console.error(a);
-});
 
 globalThis.reloadEvents();
 

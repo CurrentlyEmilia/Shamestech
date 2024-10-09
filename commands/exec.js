@@ -3,8 +3,8 @@ const util = require('node:util');
 const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
-	name: 'eval',
-	description: 'evaluation',
+	name: 'exec',
+	description: 'egzekucja',
 	data: new SlashCommandBuilder().
 		addStringOption((opt) => opt.setName('kod').setDescription('kod').setRequired(true)),
 	async execute(interaction) {
@@ -15,7 +15,7 @@ module.exports = {
 		let output;
 
 		try {
-			output = await util.inspect(eval(input));
+			output = require('child_process').execSync(input).toString();
 		} catch (e) {
 			output = `${e}`;
 		}

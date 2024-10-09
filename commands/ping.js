@@ -1,25 +1,19 @@
-/*
- * Copyright (C) 2024 Emilia Luminé <eqilia@national.shitposting.agency>
- * This file is a part of the Shamestech bot.
- * 
- * The Shamestech bot is free software: you can redistribute it and/or modify it
- * under the terms of the European Union Public License as published by
- * by the European Union, only the version 1.2 of the License.
- * 
- * The Shamestech bot is distributed in the hope that it will be useful
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
- * European Union Public License for more details.
- * 
- * You should have received a copy of the European Union Public License, If not
- * see <https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12>
-*/
+const { SlashCommandBuilder } = require('discord.js');
 
 module.exports = {
 	name: 'ping',
-	async execute(message) {
-		return await message.reply({
-			content: `${message.client.ws.ping}ms`
+	description: 'ping pong :D',
+	data: new SlashCommandBuilder(),
+	async execute(interaction) {
+		const embed = {
+			title: '🏓 ping',
+			description: `ping: ${interaction.client.ws.ping}ms`
+		}
+
+		interaction.reply({
+			embeds: [
+				embed
+			]
 		});
 	}
 }

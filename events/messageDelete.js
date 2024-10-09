@@ -15,6 +15,8 @@
  * see <https://www.gnu.org/licenses>
 */
 
+globalThis.snipeStore = new Map();
+
 module.exports = {
 	name: 'messageDelete',
 	async execute(message) {
