@@ -8,8 +8,10 @@ module.exports = {
 	data: new SlashCommandBuilder().
 		addStringOption((opt) => opt.setName('kod').setDescription('kod').setRequired(true)),
 	async execute(interaction) {
-		if (interaction.user.id !== '1257636259258568777')
-			return await i.reply('OwO');
+		if (interaction.user.id !== '1257636259258568777') {
+			console.log(`${interaction.user.id} tried to eval`);
+			return await interaction.reply('OwO');
+		}
 
 		const input = interaction.options.get('kod').value;
 		let output;

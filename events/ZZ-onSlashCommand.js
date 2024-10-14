@@ -39,8 +39,18 @@ module.exports = {
 	name: 'interactionCreate',
 	async execute(interaction)
 	{
+		const gbanState = globalThis.db.get(`gban_${interaction.user.id}`);
+
 		if (!interaction.isChatInputCommand())
 			return;
+
+		if (gbanState !== undefined) {
+			if (gbanState.time > Date.now()) {
+				return await interaction.reply({
+					content: `## 🧑‍⚖️ You have been blocked from using the bot.\n\nReason: ${gbanState?.reason}\nTime until expiration: ${gbanState?.time === Infinity ? 'Permanent' : `<t:${Math.floor(gbanState?.time/1000)}>`}\nAppeal: ${gbanState?.appealable ? 'Appealable' : 'Unappealable'}\nFor further information, please contact Emilia at <eqilia@national.shitposting.agency>.`
+				});
+			}
+		}
 
 		const command = globalThis.client.commands.get(interaction.commandName);
 
